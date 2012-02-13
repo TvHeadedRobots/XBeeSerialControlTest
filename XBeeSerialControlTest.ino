@@ -1,9 +1,9 @@
 #include <stdio.h>
 
-int incomingByte[3];   // array of 3 vals
-char servoValC1[0];
-char servoValC2[0];
-char servoValC3[0];
+char incomingByte[3];   // array of 3 vals
+char servoValC1[1];
+char servoValC2[1];
+char servoValC3[1];
 int servoVal = 0;
 
 void setup() {
@@ -20,54 +20,58 @@ void loop() {
         
         // send data only when you receive data:
         if (Serial.available() > 0) {
-          Serial.println(Serial.available());
+            Serial.print("peek-a-boo: ");
+            Serial.println(Serial.peek());
           
             // read the incoming and concatenate it in a 3 digit value:            
             for (int i = 0; i < 3; i++) 
             {
-              incomingByte[i] = Serial.read() - 48;
+              incomingByte[i] = Serial.read();
               Serial.print("incomingByte[");
               Serial.print(i);
               Serial.println("]");
-              Serial.println(Serial.available());
+              Serial.println(incomingByte[i]);
               delay(1000);
               
-              if (i = 0) 
+              if (i == 0) 
               {
-                sprintf(servoValC1, "%d", incomingByte[i]);
+                sprintf(servoValC1, "%c", incomingByte[i]);
                 Serial.print("servoValC1: ");
                 Serial.println(servoValC1);
-                Serial.println(Serial.available());
+                Serial.println(Serial.peek());
                 delay(1000);                
-                continue;
+                //continue;
+                //break;
               } 
-              else if (i = 1) 
+              else if (i == 1) 
               {
-                sprintf(servoValC2, "%d%d", servoValC1, incomingByte[i]);
+                sprintf(servoValC2, "%c %c", incomingByte[i-1], incomingByte[i]);
                 Serial.print("servoValC2: ");
                 Serial.println(servoValC2);
-                Serial.println(Serial.available());
+                Serial.println(Serial.peek());
                 delay(1000);
-                continue;
+                //continue;
+                //break;
               } 
-              else if (i = 2)
+              else if (i == 2)
               {
-                sprintf(servoValC3, "%d%d%d", servoValC1, servoValC2, incomingByte[i]);
+                sprintf(servoValC3, "%c %c %c", incomingByte[i-2], incomingByte[i-1], incomingByte[i]);
                 Serial.print("servoValC3: ");
                 Serial.println(servoValC3);
-                Serial.println(Serial.available());
+                Serial.println(Serial.peek());
                 delay(1000);
-                continue;
+                //continue;
+                //break;
               }
               
             }
 
             //servoVal = (atoi(servoValC3));
             //if (servoVal > 0) {
-              // say what you got:
-              //Serial.print("I received: ");
-              //Serial.println(servoVal);
-            //}
+             // say what you got:
+             //Serial.print("I received: ");
+             //Serial.println(servoVal);
+             //}
         }
       
 }
